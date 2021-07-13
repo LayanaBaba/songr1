@@ -1,17 +1,18 @@
 package com.songr.songr;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class application {
     @Autowired
-    private ApplicationRepository albumRepository ;
+    private AlbumRepository albumRepository ;
+
     @GetMapping("/hello")
     public String helloWorld(@RequestParam(name="name", required = false, defaultValue = "hello world") String name, Model model) {
         return "helloWorld";
@@ -36,20 +37,31 @@ public class application {
 //       album.add(album2);
 //       album.add(album3);
 
-        List<Album> album= albumRepository.findAll();
-       model.addAttribute("album",album);
+//        List<Album> albums= albumRepository.findAll();
+//        model.addAttribute("albumm", new Album());
+       model.addAttribute("albums",albumRepository.findAll());
 
 
-        return "album";
+        return "albums";
     }
 
-    @PatchMapping("/albums")
-    public String addAlbum (@ModelAttribute Album albums, Model model){
-        albumRepository.save(albums);
-        List<Album> album= albumRepository.findAll();
-        model.addAttribute("result",album);
+    @GetMapping("/addAlbum")
+    public String addAlbum(){
+        return "addAlbum";
+    }
 
-        return "result";
+    @PostMapping("/albums")
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public RedirectView postAlbum (@RequestParam(value = "Title") String title,
+                                   @RequestParam(value = "Artist") String artist,
+                                   @RequestParam(value = "SongCount") int songCount,
+                                   @RequestParam(value = "Length") int length,
+                                   @RequestParam(value = "URL") String imageUrl
+    ){
+        Album album = new Album(title,artist,songCount,length,imageUrl);
+        albumRepository.findAll((Pageable) album);
+
+        return new RedirectView("/albums");
 
     }
 }

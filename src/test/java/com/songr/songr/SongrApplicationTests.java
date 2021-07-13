@@ -7,16 +7,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class SongrApplicationTests {
 
-	@Test
-	void albumTest(){
-		var album= new Album("title1","artist1",2,5,"url1");
-
-		Assertions.assertEquals("title1", album.getTitle());
-		Assertions.assertEquals("artist1", album.getArtist());
-		Assertions.assertEquals(2, album.getSongCount());
-		Assertions.assertEquals(5, album.getLength());
-		Assertions.assertEquals("url1", album.getImageUrl());
-	}
+//	@Test
+//	void albumTest(){
+//		var album= new Album("title1","artist1",2,5,"url1");
+//
+//		Assertions.assertEquals("title1", album.getTitle());
+//		Assertions.assertEquals("artist1", album.getArtist());
+//		Assertions.assertEquals(2, album.getSongCount());
+//		Assertions.assertEquals(5, album.getLength());
+//		Assertions.assertEquals("url1", album.getImageUrl());
+//	}
 
 	@Test
 	void titleSetTest(){
